@@ -1,30 +1,63 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(const MyApp());
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_online_turn_based_game/screens/login.dart';
+import 'package:flutter_online_turn_based_game/services/auth.dart';
+import 'firebase_options.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  runApp(OnlineTurnBasedGame());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+class OnlineTurnBasedGame extends StatelessWidget {
+  const OnlineTurnBasedGame({Key? key}) : super(key: key);
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Online Turn-Based Game',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const Root(),
+    );
+  }
+}
+
+class Root extends StatefulWidget {
+  const Root({Key? key}) : super(key: key);
+
+  @override
+  State<Root> createState() => _RootState();
+}
+
+class _RootState extends State<Root> {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder(
+      stream: Auth(auth: _auth).user,
+      builder: (BuildContext context, AsyncSnapshot<User?> snapshot) {
+        if (snapshot.connectionState == ConnectionState.active) {
+          if (snapshot.data?.uid == null) {
+            return Login(auth: _auth);
+          } else {
+            return const MyHomePage(title: "Working");
+          }
+        } else {
+          return const Scaffold(
+            body: Center(
+              child: Text("Loading..."),
+            ),
+          );
+        }
+      },
     );
   }
 }

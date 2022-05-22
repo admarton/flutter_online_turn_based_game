@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "337610044312",
+    "project_id": "online-turn-based-game",
+    "storage_bucket": "online-turn-based-game.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:337610044312:android:1aa9fa2ef679929a17b1ed",
+        "android_client_info": {
+          "package_name": "com.example.flutter_online_turn_based_game"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "337610044312-9masf1ueom0kgkelg5249h8ckgfbpr0c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyARPPWFVZ2w5oDzJY8E_EuJr2FgGePv8Rk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "337610044312-9masf1ueom0kgkelg5249h8ckgfbpr0c.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
