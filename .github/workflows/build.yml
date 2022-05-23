@@ -7,7 +7,7 @@ name: "Build executables"
 jobs:
   build:
     name: "Build"
-    runs-on: ubuntu_latest
+    runs-on: ubuntu
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-java@v2
