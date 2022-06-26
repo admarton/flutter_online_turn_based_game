@@ -17,6 +17,26 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+
+  void loginOrRegister(
+      Future<String> Function({required String email, required String password})
+          func) async {
+    final String retVal = await func(
+      email: _emailController.text,
+      password: _passwordController.text,
+    );
+    if (retVal == "Success") {
+      _emailController.clear();
+      _passwordController.clear();
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(retVal),
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,49 +58,23 @@ class _LoginState extends State<Login> {
                   textAlign: TextAlign.center,
                   decoration: const InputDecoration(hintText: "Password"),
                   controller: _passwordController,
+                  obscureText: true,
+                  onEditingComplete: () =>
+                      loginOrRegister(Auth(auth: widget.auth).signIn),
                 ),
                 const SizedBox(
                   height: 20,
                 ),
                 ElevatedButton(
                   key: const ValueKey("signIn"),
-                  onPressed: () async {
-                    final String retVal = await Auth(auth: widget.auth).signIn(
-                      email: _emailController.text,
-                      password: _passwordController.text,
-                    );
-                    if (retVal == "Success") {
-                      _emailController.clear();
-                      _passwordController.clear();
-                    } else {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text(retVal),
-                        ),
-                      );
-                    }
-                  },
+                  onPressed: () =>
+                      loginOrRegister(Auth(auth: widget.auth).signIn),
                   child: const Text("Sign In"),
                 ),
                 TextButton(
                   key: const ValueKey("createAccount"),
-                  onPressed: () async {
-                    final String retVal =
-                        await Auth(auth: widget.auth).createAccount(
-                      email: _emailController.text,
-                      password: _passwordController.text,
-                    );
-                    if (retVal == "Success") {
-                      _emailController.clear();
-                      _passwordController.clear();
-                    } else {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text(retVal),
-                        ),
-                      );
-                    }
-                  },
+                  onPressed: () =>
+                      loginOrRegister(Auth(auth: widget.auth).createAccount),
                   child: const Text("Create Account"),
                 )
               ],
